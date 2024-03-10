@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float speed = 5f;
     private LineController lineController;
     private bool isMoving = true;
 
@@ -14,7 +13,7 @@ public class PlayerController : MonoBehaviour
         lineController = GetComponentInChildren<LineController>();
     }
 
-    void Update()
+    private void Update()
     {
         if (isMoving)
         {
@@ -23,15 +22,6 @@ public class PlayerController : MonoBehaviour
             mousePosition.y = transform.position.y;
 
             transform.position = mousePosition + new Vector3(-0.429f, 0, 0);
-            /*Vector3 direction = (mousePosition - transform.position).normalized;
-            if (direction.x < 0)
-            {
-                transform.Translate(Vector2.left * speed * Time.deltaTime);
-            }
-            else
-            {
-                transform.Translate(Vector2.right * speed * Time.deltaTime);
-            }*/
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -40,12 +30,13 @@ public class PlayerController : MonoBehaviour
             {
                 isMoving = false;
                 var mousePosition= Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                mousePosition.z = 0f;
                 lineController.CastALineToAPoint(mousePosition);
             }
             else
             {
-                isMoving = true;
                 lineController.PullLine();
+                lineController.OnLinePulled += () => isMoving = true;
             }
             
         }

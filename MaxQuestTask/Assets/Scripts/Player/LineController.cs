@@ -16,6 +16,7 @@ public class LineController : MonoBehaviour
     private bool canPullFish;
 
     public Action OnLinePulled;
+    public Action OnCanCatchFish;
 
     private void Awake()
     {
@@ -66,10 +67,15 @@ public class LineController : MonoBehaviour
     
     private IEnumerator PullToPointCoroutine(Vector3 targetPosition)
     {
+        if (canPullFish)
+        {
+            OnCanCatchFish.Invoke();
+            fishBaitCollider.CatchFish();
+        }
         fishBaitCollider.gameObject.SetActive(false);
         redCircle.SetActive(false);
         greenCircle.SetActive(false);
-        foundFish.SetActive(true);
+        
         var startPosition = points[1].localPosition;
         var elapsedTime = 0f;
 
@@ -83,14 +89,21 @@ public class LineController : MonoBehaviour
         points[1].localPosition = targetPosition;
         bait.SetActive(false);
         foundFish.SetActive(false);
-        //if(canPullFish)
+        
         OnLinePulled.Invoke();
     }
+
+    
 
     private void ChangeCircleColor(bool isInRange)
     {
         greenCircle.SetActive(isInRange);
         redCircle.SetActive(!isInRange);
         canPullFish = isInRange;
+    }
+
+    private void OnDestroy()
+    {
+        fishBaitCollider.OnFishInRange -= ChangeCircleColor;
     }
 }

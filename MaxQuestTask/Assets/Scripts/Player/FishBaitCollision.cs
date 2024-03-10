@@ -18,6 +18,7 @@ public class FishBaitCollision : MonoBehaviour
         var firstFish = fishesInRange[0].gameObject;
         fishesInRange.Remove(fishesInRange[0]);
         Destroy(firstFish);
+        FishManager.Instance.InstantiateNewFish();
     }
 
     private void OnTriggerEnter2D(Collider2D other)

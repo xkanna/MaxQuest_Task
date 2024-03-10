@@ -6,11 +6,28 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private LineController lineController;
+    private FishCatcher fishCatcher;
+    private Animator animator;
     private bool isMoving = true;
 
     private void Start()
     {
         lineController = GetComponentInChildren<LineController>();
+        fishCatcher = GetComponentInChildren<FishCatcher>();
+        animator = GetComponentInChildren<Animator>();
+        lineController.OnLinePulled += ChangeIsMoving;
+        lineController.OnCanCatchFish += TryToPullFish;
+    }
+
+    private void ChangeIsMoving()
+    {
+        isMoving = true;
+        animator.SetBool("IsMoving", true);
+    }
+
+    private void TryToPullFish()
+    {
+        fishCatcher.TryToPullFish();
     }
 
     private void Update()
@@ -29,6 +46,7 @@ public class PlayerController : MonoBehaviour
             if (isMoving)
             {
                 isMoving = false;
+                animator.SetBool("IsMoving", false);
                 var mousePosition= Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 mousePosition.z = 0f;
                 lineController.CastALineToAPoint(mousePosition);
@@ -36,9 +54,13 @@ public class PlayerController : MonoBehaviour
             else
             {
                 lineController.PullLine();
-                lineController.OnLinePulled += () => isMoving = true;
             }
-            
         }
+    }
+
+    private void OnDestroy()
+    {
+        lineController.OnLinePulled -= ChangeIsMoving;
+        lineController.OnCanCatchFish -= TryToPullFish;
     }
 }

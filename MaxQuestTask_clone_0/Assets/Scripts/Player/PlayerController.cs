@@ -67,9 +67,9 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
-        lineController.OnLinePulled -= ChangeIsMoving;
-        lineController.OnCanCatchFish -= TryToPullFish;
+        //lineController.OnLinePulled -= ChangeIsMoving;
+        //lineController.OnCanCatchFish -= TryToPullFish;
     }
 }

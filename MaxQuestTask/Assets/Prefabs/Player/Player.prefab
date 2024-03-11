@@ -388,7 +388,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5837788670720250816}
-  - component: {fileID: 2560725512834052949}
+  - component: {fileID: 4870617060292869804}
   m_Layer: 0
   m_Name: FishCatcher
   m_TagString: Untagged
@@ -411,7 +411,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1582604195618436138}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2560725512834052949
+--- !u!114 &4870617060292869804
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -482,7 +482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1412267242
+  GlobalObjectIdHash: 2859212252
   InScenePlacedSourceGlobalObjectIdHash: 1255254734
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -949,6 +949,7 @@ GameObject:
   - component: {fileID: 7678384102121800734}
   - component: {fileID: 3000786512303962484}
   - component: {fileID: 3636980577581932085}
+  - component: {fileID: 4350176154739240115}
   m_Layer: 0
   m_Name: PlayerSprite
   m_TagString: Untagged
@@ -1044,6 +1045,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4350176154739240115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6298606456736253800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7617f147f02c37c4781973d864fefc1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 3636980577581932085}
 --- !u!1 &8452817458271898198
 GameObject:
   m_ObjectHideFlags: 0

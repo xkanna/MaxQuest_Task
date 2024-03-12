@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -33,11 +30,10 @@ public class FishManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void SpawnFishesServerRpc()
     {
-        for (int i = 0; i < numberOfFishes; i++)
+        for (var i = 0; i < numberOfFishes; i++)
         {
             var fish = Instantiate(fishPrefab, transform.position, Quaternion.identity);
-            fish.gameObject.SetActive(true);
-            NetworkObject fishNetworkObject = fish.GetComponent<NetworkObject>();
+            var fishNetworkObject = fish.GetComponent<NetworkObject>();
             fishNetworkObject.Spawn();
         }
     }
@@ -67,7 +63,8 @@ public class FishManager : NetworkBehaviour
     {
         var fish = Instantiate(fishPrefab, position, Quaternion.identity);
         fish.gameObject.SetActive(true);
-        NetworkObject fishNetworkObject = fish.GetComponent<NetworkObject>();
+        
+        var fishNetworkObject = fish.GetComponent<NetworkObject>();
         fishNetworkObject.Spawn();
     }
     

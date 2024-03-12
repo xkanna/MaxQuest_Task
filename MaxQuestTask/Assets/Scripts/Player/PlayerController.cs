@@ -21,6 +21,7 @@ public class PlayerController : NetworkBehaviour
         lineController = GetComponent<LineController>();
         fishCatcher = GetComponent<FishCatcher>();
         animator = GetComponentInChildren<Animator>();
+        
         lineController.OnLinePulled += ChangeIsMoving;
         lineController.OnCanCatchFish += TryToPullFish;
     }
@@ -40,31 +41,46 @@ public class PlayerController : NetworkBehaviour
     {
         if (isMoving)
         {
-            var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            
-            if (mousePosition.x <= 6 && mousePosition.x >= -6)
-            {
-                mousePosition.z = 0f;
-                mousePosition.y = transform.position.y;
-                transform.position = mousePosition + new Vector3(-0.429f, 0, 0);
-            }
+            MovePlayer();
         }
 
         if (Input.GetMouseButtonDown(0))
         {
             if (isMoving)
             {
-                isMoving = false;
-                animator.SetBool("IsMoving", false);
-                var mousePosition= Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                mousePosition.z = 0f;
-                lineController.CastALineToAPoint(mousePosition);
+                ThrowLine();
             }
             else
             {
-                lineController.PullLine();
+                PullLine();
             }
         }
+    }
+
+    private void MovePlayer()
+    {
+        var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            
+        if (mousePosition.x <= 6 && mousePosition.x >= -6)
+        {
+            mousePosition.z = 0f;
+            mousePosition.y = transform.position.y;
+            transform.position = mousePosition + new Vector3(-0.429f, 0, 0);
+        }
+    }
+
+    private void ThrowLine()
+    {
+        isMoving = false;
+        animator.SetBool("IsMoving", false);
+        var mousePosition= Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition.z = 0f;
+        lineController.CastALineToAPoint(mousePosition);
+    }
+
+    private void PullLine()
+    {
+        lineController.PullLine();
     }
 
     public override void OnDestroy()

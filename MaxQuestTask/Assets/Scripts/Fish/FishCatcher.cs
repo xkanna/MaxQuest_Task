@@ -14,6 +14,7 @@ public class FishCatcher : NetworkBehaviour
     [SerializeField] private GameObject fishMissedUiPrefab;
     [SerializeField] private TextMeshProUGUI fishCaughtUiText;
     [SerializeField] private TextMeshProUGUI pullAttemptsUiText;
+    [SerializeField] private int minimumFishToCatch = 3;
     
     private int totalAttempts = 0;
     private int totalFishCaught = 0;
@@ -32,7 +33,9 @@ public class FishCatcher : NetworkBehaviour
 
         var randomValue = Random.value;
 
-        if (randomValue <= 0.3f)
+        float successProbability = CalculateSuccessProbability();
+
+        if (randomValue <= successProbability)
         {
             totalFishCaught++;
             fishCaughtInSet++;
@@ -50,6 +53,21 @@ public class FishCatcher : NetworkBehaviour
         }
 
         RefreshUi();
+    }
+    
+    private float CalculateSuccessProbability()
+    {
+        float remainingAttempts = 10 - attemptsInSet;
+        float remainingFish = Mathf.Max(minimumFishToCatch - fishCaughtInSet, 0); // Ensure we catch at least the minimum number of fish
+
+        if (remainingFish == 0f)
+            return minimumFishToCatch / 10f;
+
+        var successProbability = remainingFish / remainingAttempts;
+
+        successProbability = Mathf.Clamp(successProbability, 0f, 1f);
+
+        return successProbability;
     }
 
     private void FishMissed()

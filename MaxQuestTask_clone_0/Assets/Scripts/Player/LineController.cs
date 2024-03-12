@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class LineController : NetworkBehaviour
 {
@@ -31,11 +30,15 @@ public class LineController : NetworkBehaviour
 
     private void Update()
     {
-        for (int i = 0; i < points.Length; i++)
+        UpdateLineRendererPoints();
+    }
+
+    private void UpdateLineRendererPoints()
+    {
+        for (var i = 0; i < points.Length; i++)
         {
             lr.SetPosition(i, points[i].position);
         }
-        
     }
 
     public void CastALineToAPoint(Vector3 point)
@@ -56,10 +59,8 @@ public class LineController : NetworkBehaviour
 
         while (elapsedTime < 0.5f)
         {
-            // Update the position on both server and client
             points[1].position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / 0.5f);
 
-            // Synchronize the position across network
             UpdatePointPositionClientRpc(1, points[1].position);
             UpdatePointPositionServerRpc(1, points[1].position);
 
@@ -103,7 +104,6 @@ public class LineController : NetworkBehaviour
         OnLinePulled?.Invoke();
     }
 
-    // ServerRpc to update the position of a point
     [ServerRpc(RequireOwnership = false)]
     private void UpdatePointPositionServerRpc(int pointIndex, Vector3 newPosition)
     {

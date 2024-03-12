@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Fish : NetworkBehaviour
 {
@@ -35,7 +34,22 @@ public class Fish : NetworkBehaviour
             ChangeDirection();
             timer = changeDirectionTime;
         }
+        ChangePosition();
+    }
+    
+    private void FixedUpdate()
+    {
+        MoveFish();
+    }
+    
+    private void ChangeDirection()
+    {
+        var randomAngle = Random.Range(0f, 360f);
+        movementDirection = Quaternion.Euler(0f, 0f, randomAngle) * Vector2.right;
+    }
 
+    private void ChangePosition()
+    {
         var currentPosition = transform.position;
         if (currentPosition.x < previousPosition.x)
         {
@@ -48,20 +62,14 @@ public class Fish : NetworkBehaviour
         previousPosition = currentPosition;
     }
 
-    private void FixedUpdate()
+    private void MoveFish()
     {
-        Vector2 movement = movementDirection * moveSpeed * Time.fixedDeltaTime;
-        Vector2 newPosition = rb.position + movement;
+        var movement = movementDirection * moveSpeed * Time.fixedDeltaTime;
+        var newPosition = rb.position + movement;
 
         newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
         newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
 
         rb.MovePosition(newPosition);
-    }
-
-    private void ChangeDirection()
-    {
-        var randomAngle = Random.Range(0f, 360f);
-        movementDirection = Quaternion.Euler(0f, 0f, randomAngle) * Vector2.right;
     }
 }

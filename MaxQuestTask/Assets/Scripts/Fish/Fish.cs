@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Fish : MonoBehaviour
+public class Fish : NetworkBehaviour
 {
     public float moveSpeed = 3f;
     public float changeDirectionTime = 2f;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class FishBaitCollision : MonoBehaviour
@@ -13,12 +14,17 @@ public class FishBaitCollision : MonoBehaviour
         fishesInRange = new List<GameObject>();
     }
 
-    public void CatchFish()
+    [ServerRpc(RequireOwnership = false)]
+    public void CatchFishServerRpc()
     {
-        var firstFish = fishesInRange[0].gameObject;
-        fishesInRange.Remove(fishesInRange[0]);
-        Destroy(firstFish);
-        FishManager.Instance.InstantiateNewFish();
+        if (fishesInRange.Count > 0)
+        {
+            var firstFish = fishesInRange[0].gameObject;
+            fishesInRange.Remove(firstFish);
+
+            // Spawn a new fish on all clients
+            FishManager.Instance.SpawnFishLocally(firstFish);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

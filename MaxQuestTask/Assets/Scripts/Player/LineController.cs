@@ -70,7 +70,7 @@ public class LineController : MonoBehaviour
         if (canPullFish)
         {
             OnCanCatchFish.Invoke();
-            fishBaitCollider.CatchFish();
+            fishBaitCollider.CatchFishServerRpc();
         }
         fishBaitCollider.gameObject.SetActive(false);
         redCircle.SetActive(false);

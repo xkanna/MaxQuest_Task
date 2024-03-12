@@ -90,30 +90,22 @@ public class FishCatcher : NetworkBehaviour
 
     private void RefreshUi()
     {
-        if (IsServer)
-        {
-            RefreshUiServerRpc(totalFishCaught, totalAttempts);
-        }
-        else
-        {
-            //RefreshUiClientRpc(totalFishCaught, totalAttempts);
-        }
-    }
-
-    // ServerRpc to synchronize the UI refresh across all clients
-    [ServerRpc(RequireOwnership = false)]
-    private void RefreshUiServerRpc(int totalFishCaught, int totalAttempts)
-    {
-        // Call the RefreshUi method on all clients
+        fishCaughtUiText.text = totalFishCaught.ToString();
+        pullAttemptsUiText.text = totalAttempts.ToString();
+        RefreshUiServerRpc(totalFishCaught, totalAttempts);
         RefreshUiClientRpc(totalFishCaught, totalAttempts);
     }
 
-    // ClientRpc to synchronize the UI refresh across all clients
+    [ServerRpc(RequireOwnership = false)]
+    private void RefreshUiServerRpc(int totalFishCaught, int totalAttempts)
+    {
+        fishCaughtUiText.text = totalFishCaught.ToString();
+        pullAttemptsUiText.text = totalAttempts.ToString();
+    }
+
     [ClientRpc]
     private void RefreshUiClientRpc(int totalFishCaught, int totalAttempts)
     {
-        // Update the UI text fields on all clients
-        Debug.LogError(IsServer);
         fishCaughtUiText.text = totalFishCaught.ToString();
         pullAttemptsUiText.text = totalAttempts.ToString();
     }

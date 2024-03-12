@@ -18,8 +18,8 @@ public class PlayerController : NetworkBehaviour
 
     private void Start()
     {
-        lineController = GetComponentInChildren<LineController>();
-        fishCatcher = GetComponentInChildren<FishCatcher>();
+        lineController = GetComponent<LineController>();
+        fishCatcher = GetComponent<FishCatcher>();
         animator = GetComponentInChildren<Animator>();
         lineController.OnLinePulled += ChangeIsMoving;
         lineController.OnCanCatchFish += TryToPullFish;

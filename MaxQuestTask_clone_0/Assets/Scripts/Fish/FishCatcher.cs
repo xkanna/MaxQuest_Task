@@ -6,12 +6,12 @@ using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FishCatcher : MonoBehaviour
+public class FishCatcher : NetworkBehaviour
 {
     [SerializeField] private List<FishType> allFishes;
     [SerializeField] private GameObject uiCanvas;
-    [SerializeField] private FishCaughtUi fishCaughtUi;
-    [SerializeField] private GameObject fishMissedUi;
+    [SerializeField] private FishCaughtUi fishCaughtUiPrefab;
+    [SerializeField] private GameObject fishMissedUiPrefab;
     [SerializeField] private TextMeshProUGUI fishCaughtUiText;
     [SerializeField] private TextMeshProUGUI pullAttemptsUiText;
     
@@ -19,7 +19,7 @@ public class FishCatcher : MonoBehaviour
     private int totalFishCaught = 0;
     private int attemptsInSet = 0; 
     private int fishCaughtInSet = 0;
-
+    
     private void Start()
     {
         RefreshUi();
@@ -29,7 +29,7 @@ public class FishCatcher : MonoBehaviour
     {
         totalAttempts++;
         attemptsInSet++;
-        
+
         var randomValue = Random.value;
 
         if (randomValue <= 0.3f)
@@ -40,7 +40,7 @@ public class FishCatcher : MonoBehaviour
         }
         else
         {
-           FishMissed();
+            FishMissed();
         }
 
         if (attemptsInSet == 10)
@@ -48,20 +48,20 @@ public class FishCatcher : MonoBehaviour
             attemptsInSet = 0;
             fishCaughtInSet = 0;
         }
-        
+
         RefreshUi();
     }
 
     private void FishMissed()
     {
-        var fishMissed = Instantiate(fishMissedUi, uiCanvas.transform);
+        var fishMissed = Instantiate(fishMissedUiPrefab, uiCanvas.transform);
         Destroy(fishMissed, 1f);
     }
 
     private void FishCaught()
     {
         var fish = CatchRandomFish();
-        var fishUi = Instantiate(fishCaughtUi, uiCanvas.transform);
+        var fishUi = Instantiate(fishCaughtUiPrefab, uiCanvas.transform);
         fishUi.SetupFish(fish.FishIcon, fish.FishName);
     }
 
@@ -90,6 +90,30 @@ public class FishCatcher : MonoBehaviour
 
     private void RefreshUi()
     {
+        if (IsServer)
+        {
+            RefreshUiServerRpc(totalFishCaught, totalAttempts);
+        }
+        else
+        {
+            //RefreshUiClientRpc(totalFishCaught, totalAttempts);
+        }
+    }
+
+    // ServerRpc to synchronize the UI refresh across all clients
+    [ServerRpc(RequireOwnership = false)]
+    private void RefreshUiServerRpc(int totalFishCaught, int totalAttempts)
+    {
+        // Call the RefreshUi method on all clients
+        RefreshUiClientRpc(totalFishCaught, totalAttempts);
+    }
+
+    // ClientRpc to synchronize the UI refresh across all clients
+    [ClientRpc]
+    private void RefreshUiClientRpc(int totalFishCaught, int totalAttempts)
+    {
+        // Update the UI text fields on all clients
+        Debug.LogError(IsServer);
         fishCaughtUiText.text = totalFishCaught.ToString();
         pullAttemptsUiText.text = totalAttempts.ToString();
     }

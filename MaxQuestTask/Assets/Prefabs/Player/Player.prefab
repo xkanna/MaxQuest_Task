@@ -388,7 +388,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5837788670720250816}
-  - component: {fileID: 4870617060292869804}
   m_Layer: 0
   m_Name: FishCatcher
   m_TagString: Untagged
@@ -411,27 +410,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1582604195618436138}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4870617060292869804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3199521728733650105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8c56b5da87b51149a5f3fd9e1e943e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allFishes:
-  - {fileID: 11400000, guid: 76e9b3ac22b73e243bcd116d2c558253, type: 2}
-  - {fileID: 11400000, guid: 90c9ba4e76d5c784f934ceed0ecbd4ad, type: 2}
-  - {fileID: 11400000, guid: a8a523b7c62097c48a0f1977964b08b2, type: 2}
-  uiCanvas: {fileID: 5347589491859316464}
-  fishCaughtUi: {fileID: 5460853301316477366, guid: c7235fcb44dbd744a9964c5ab81f3490, type: 3}
-  fishMissedUi: {fileID: 726757992496026012, guid: 6494894a85136c04a99b56dc005cc9c3, type: 3}
-  fishCaughtUiText: {fileID: 2868681113825847711}
-  pullAttemptsUiText: {fileID: 5330653790593537718}
 --- !u!1 &3222555072336613408
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,6 +423,7 @@ GameObject:
   - component: {fileID: 7617225643054882715}
   - component: {fileID: -3795118976633447523}
   - component: {fileID: 6592845431034232713}
+  - component: {fileID: 3270268429044049030}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -526,7 +505,7 @@ MonoBehaviour:
   SyncScaleX: 0
   SyncScaleY: 0
   SyncScaleZ: 0
-  PositionThreshold: 0.62
+  PositionThreshold: 0
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
   UseQuaternionSynchronization: 0
@@ -555,6 +534,27 @@ MonoBehaviour:
   greenCircle: {fileID: 3374878514520418425}
   foundFish: {fileID: 8672685064921444321}
   bait: {fileID: 5647927426301544757}
+--- !u!114 &3270268429044049030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3222555072336613408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c56b5da87b51149a5f3fd9e1e943e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allFishes:
+  - {fileID: 11400000, guid: 76e9b3ac22b73e243bcd116d2c558253, type: 2}
+  - {fileID: 11400000, guid: 90c9ba4e76d5c784f934ceed0ecbd4ad, type: 2}
+  - {fileID: 11400000, guid: a8a523b7c62097c48a0f1977964b08b2, type: 2}
+  uiCanvas: {fileID: 5347589491859316464}
+  fishCaughtUiPrefab: {fileID: 5460853301316477366, guid: c7235fcb44dbd744a9964c5ab81f3490, type: 3}
+  fishMissedUiPrefab: {fileID: 726757992496026012, guid: 6494894a85136c04a99b56dc005cc9c3, type: 3}
+  fishCaughtUiText: {fileID: 2868681113825847711}
+  pullAttemptsUiText: {fileID: 5330653790593537718}
 --- !u!1 &3374878514520418425
 GameObject:
   m_ObjectHideFlags: 0

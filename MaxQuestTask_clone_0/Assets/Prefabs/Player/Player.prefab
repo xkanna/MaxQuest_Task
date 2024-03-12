@@ -444,6 +444,7 @@ GameObject:
   - component: {fileID: 9095655523002619476}
   - component: {fileID: 7617225643054882715}
   - component: {fileID: -3795118976633447523}
+  - component: {fileID: 6592845431034232713}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -534,6 +535,26 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &6592845431034232713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3222555072336613408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b52c807bd963e14c9008a9e18d60ae0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points:
+  - {fileID: 6426329200168756289}
+  - {fileID: 1545257267428741327}
+  fishBaitCollider: {fileID: 3937716927179574454}
+  redCircle: {fileID: 9090478516111823260}
+  greenCircle: {fileID: 3374878514520418425}
+  foundFish: {fileID: 8672685064921444321}
+  bait: {fileID: 5647927426301544757}
 --- !u!1 &3374878514520418425
 GameObject:
   m_ObjectHideFlags: 0
@@ -1069,7 +1090,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4099499147542293697}
   - component: {fileID: 2885499221304173549}
-  - component: {fileID: 8050201706841331358}
   m_Layer: 0
   m_Name: LineRenderer
   m_TagString: Untagged
@@ -1207,26 +1227,6 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!114 &8050201706841331358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8452817458271898198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b52c807bd963e14c9008a9e18d60ae0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  points:
-  - {fileID: 6426329200168756289}
-  - {fileID: 1545257267428741327}
-  fishBaitCollider: {fileID: 3937716927179574454}
-  redCircle: {fileID: 9090478516111823260}
-  greenCircle: {fileID: 3374878514520418425}
-  foundFish: {fileID: 8672685064921444321}
-  bait: {fileID: 5647927426301544757}
 --- !u!1 &8593430793017337966
 GameObject:
   m_ObjectHideFlags: 0

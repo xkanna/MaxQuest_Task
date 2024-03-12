@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class LineController : MonoBehaviour
+public class LineController : NetworkBehaviour
 {
     [SerializeField] private Transform[] points;
     [SerializeField] private FishBaitCollision fishBaitCollider;
@@ -20,7 +21,7 @@ public class LineController : MonoBehaviour
 
     private void Awake()
     {
-        lr = GetComponent<LineRenderer>();
+        lr = GetComponentInChildren<LineRenderer>();
     }
 
     private void Start()
@@ -30,12 +31,13 @@ public class LineController : MonoBehaviour
 
     private void Update()
     {
-        for (var i = 0; i < points.Length; i++)
+        for (int i = 0; i < points.Length; i++)
         {
             lr.SetPosition(i, points[i].position);
         }
+        
     }
-    
+
     public void CastALineToAPoint(Vector3 point)
     {
         StartCoroutine(MoveToPointCoroutine(point));
@@ -54,7 +56,13 @@ public class LineController : MonoBehaviour
 
         while (elapsedTime < 0.5f)
         {
+            // Update the position on both server and client
             points[1].position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / 0.5f);
+
+            // Synchronize the position across network
+            UpdatePointPositionClientRpc(1, points[1].position);
+            UpdatePointPositionServerRpc(1, points[1].position);
+
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -64,24 +72,26 @@ public class LineController : MonoBehaviour
         fishBaitCollider.gameObject.SetActive(true);
         foundFish.SetActive(false);
     }
-    
+
     private IEnumerator PullToPointCoroutine(Vector3 targetPosition)
     {
         if (canPullFish)
         {
-            OnCanCatchFish.Invoke();
+            OnCanCatchFish?.Invoke();
             fishBaitCollider.CatchFishServerRpc();
         }
         fishBaitCollider.gameObject.SetActive(false);
         redCircle.SetActive(false);
         greenCircle.SetActive(false);
-        
+
         var startPosition = points[1].localPosition;
         var elapsedTime = 0f;
 
         while (elapsedTime < 0.5f)
         {
             points[1].localPosition = Vector3.Lerp(startPosition, targetPosition, elapsedTime / 0.5f);
+            UpdatePointPositionClientRpc(1, points[1].position);
+            UpdatePointPositionServerRpc(1, points[1].position);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -89,11 +99,23 @@ public class LineController : MonoBehaviour
         points[1].localPosition = targetPosition;
         bait.SetActive(false);
         foundFish.SetActive(false);
-        
-        OnLinePulled.Invoke();
+
+        OnLinePulled?.Invoke();
     }
 
+    // ServerRpc to update the position of a point
+    [ServerRpc(RequireOwnership = false)]
+    private void UpdatePointPositionServerRpc(int pointIndex, Vector3 newPosition)
+    {
+        points[pointIndex].position = newPosition;
+    }
     
+    [ClientRpc]
+    private void UpdatePointPositionClientRpc(int pointIndex, Vector3 newPosition)
+    {
+        if (IsServer) return;
+        points[pointIndex].position = newPosition + new Vector3(-0.429f, 0, 0);
+    }
 
     private void ChangeCircleColor(bool isInRange)
     {
